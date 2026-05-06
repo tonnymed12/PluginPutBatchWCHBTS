@@ -40,11 +40,8 @@ controllerName="serviacero.custom.plugins.zpluginPutBatchWCHBTS.zpluginPutBatchW
             <HBox width="80%" class="sapUiTinyMarginBeginEnd sapUiTinyMarginTop">
                 <Title text="{i18n>orderSummary}" level="H5" class="sapUiSmallMarginBeginEnd"/>
             </HBox>
+            
             <HBox width="80%" class="sapUiSmallMarginBeginEnd sapUiSmallMarginBottom" alignItems="Center">
-                <!-- <VBox width="20%">
-                    <Label text="{i18n>loteCode}"/>
-                    <Input id="orderLote" value="{orderSummary>/lote}" enabled="false" width="100%"/>
-                </VBox> -->
                 <VBox width="20%" class="sapUiSmallMarginBeginEnd">
                     <Label text="{i18n>materialCode}"/>
                     <Input id="orderMaterial" value="{orderSummary>/material}" enabled="false" width="100%"/>
