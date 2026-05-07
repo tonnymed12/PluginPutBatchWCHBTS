@@ -18,7 +18,6 @@ sap.ui.define([
 
 		addPropertyEditorContent: function (oPropertyFormContainer) {
 			var oData = this.getPropertyData();
-
 			this.addInputField(oPropertyFormContainer, "autoRefresh", oData);
 			this.addInputField(oPropertyFormContainer, "mandante", oData);
 

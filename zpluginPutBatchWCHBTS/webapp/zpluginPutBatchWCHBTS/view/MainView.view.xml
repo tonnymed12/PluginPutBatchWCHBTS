@@ -18,14 +18,12 @@ controllerName="serviacero.custom.plugins.zpluginPutBatchWCHBTS.zpluginPutBatchW
                 backgroundDesign="Transparent"
                 class="sapUiNoContentPadding">
 
-            <HBox width="80%" class="sapUiSmallMarginBottom">
+            <!-- header -->
+            <HBox width="97%" class="sapUiSmallMarginBottom" alignItems="Center">
               <MessageStrip text="{i18n>scannerReady}" type="Information" showIcon="true"
                 customIcon="sap-icon://bar-code" class="sapUiSmallMarginTop sapUiSmallMarginBeginEnd sapUiSmallMarginBottom" />
-            </HBox>
-
-            <HBox width="80%" class="sapUiSmallMarginBottom sapUiSmallMarginBeginEnd" alignItems="Center">
                 <Label text="{i18n>Barcode}" class="sapUiSmallMarginEnd"/>
-                <Input id="scanInput" submit=".onBarcodeSubmit" class="sapUiSmallMarginEnd sapUiSmallMarginBeginEnd" width="300px"/>
+                <Input id="scanInput" submit=".onBarcodeSubmit" liveChange=".onScanLiveupdate" class="sapUiSmallMarginEnd sapUiSmallMarginBeginEnd" width="300px"/>
                 <ndc:BarcodeScannerButton
                     id="sampleBarcodeScannerButton"
                     scanSuccess="onScanSuccess"
@@ -33,33 +31,59 @@ controllerName="serviacero.custom.plugins.zpluginPutBatchWCHBTS.zpluginPutBatchW
                     inputLiveUpdate="onScanLiveupdate"
                     dialogTitle="{i18n>BarcodeScanner}"
                     class="sapUiMediumMarginBegin sapUiSmallMarginEnd"
+                    visible="false"
                 />
             </HBox>
 
             <!-- Resumen de orden -->
-            <HBox width="80%" class="sapUiTinyMarginBeginEnd sapUiTinyMarginTop">
-                <Title text="{i18n>orderSummary}" level="H5" class="sapUiSmallMarginBeginEnd"/>
-            </HBox>
-            
-            <HBox width="80%" class="sapUiSmallMarginBeginEnd sapUiSmallMarginBottom" alignItems="Center">
-                <VBox width="20%" class="sapUiSmallMarginBeginEnd">
-                    <Label text="{i18n>materialCode}"/>
-                    <Input id="orderMaterial" value="{orderSummary>/material}" enabled="false" width="100%"/>
-                </VBox>
-                <VBox width="30%" class="sapUiSmallMarginEnd">
-                    <Label text="{i18n>descripcionMaterial}"/>
-                    <Input id="orderDescripcion" value="{orderSummary>/descripcion}" enabled="false" width="100%"/>
-                </VBox>
-                <VBox width="15%" class="sapUiSmallMarginEnd">
-                    <Label text="{i18n>cantidadNecesaria}"/>
-                    <Input id="orderCantidadNecesaria" value="{orderSummary>/cantidadNecesaria}" enabled="false" width="100%"/>
-                </VBox>
-                <VBox width="15%">
-                    <Label text="{i18n>cantidadEscaneada}"/>
-                    <Input id="orderCantidadEscaneada" value="{orderSummary>/cantidadEscaneada}" enabled="false" width="100%"/>
-                </VBox>
-            </HBox>
-            
+            <HBox width="97%" justifyContent="Center" class="sapUiSmallMarginTop sapUiSmallMarginBeginEnd">
+            <Table busyIndicatorDelay="5" id="idSummaryTable" items="{orderSummary>/ITEMS}"
+                class="sapUiSmallMarginTop" width="100%" alternateRowColors="true">
+                <headerToolbar>
+                    <Toolbar >
+                        <Title text="{i18n>orderSummary}"/>
+                    </Toolbar>
+                </headerToolbar>
+                <columns>
+                    <Column width="20%" hAlign="Left" vAlign="Middle" >
+                        <Text text="{i18n>materialCode}" />
+                    </Column>
+                    <Column width="30%" hAlign="Left" vAlign="Middle" >
+                        <Text text="{i18n>descripcionMaterial}" />
+                    </Column>
+                    <Column width="5%" hAlign="Left" vAlign="Middle" >
+                        <Text text="{i18n>UOM}"  />
+                    </Column>
+                    <Column width="15%" hAlign="Left" vAlign="Middle" >
+                        <Text text="{i18n>cantidadNecesaria}" />
+                    </Column>
+                    <Column width="15%" hAlign="Left" vAlign="Middle" >
+                        <Text text="{i18n>cantidadConsumida}" />
+                    </Column>
+                    <Column width="10%" hAlign="Left" vAlign="Middle">
+                        <Text text="{i18n>cantidadEscaneada}" />
+                    </Column>
+                    <Column width="10%" hAlign="Center" vAlign="Middle">
+                        <Text text="{i18n>cantidadPendiente}"/>
+                    </Column>
+                </columns>
+                <items>
+                    <ColumnListItem vAlign="Middle">
+                        <cells>
+                            <Text text="{orderSummary>material}" />
+                            <Text text="{orderSummary>descripcion}" />
+                            <Text text="{orderSummary>uom}"/>
+                            <Text text="{orderSummary>cantidadNecesaria}" />
+                            <Text text="{orderSummary>cantidadConsumida}" />
+                            <Text text="{orderSummary>cantidadEscaneada}" />
+                            <Text text="{orderSummary>cantidadPendiente}" />
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+            </HBox> 
+
+            <!-- tabla de lotes -->
             <HBox width="97%" justifyContent="Center" class="sapUiSmallMarginTop sapUiSmallMarginBeginEnd">
             <Table busyIndicatorDelay="5" id="idSlotTable" items="{/ITEMS}"
                 class="sapUiSmallMarginTop" width="100%" alternateRowColors="true">
@@ -84,16 +108,19 @@ controllerName="serviacero.custom.plugins.zpluginPutBatchWCHBTS.zpluginPutBatchW
                         <Text text="{i18n>loteCode}"  />
                     </Column>
                     <Column width="15%" hAlign="Left" vAlign="Middle" >
-                        <Text text="{i18n>secuenciaCode}" />
-                    </Column>
-                    <Column width="15%" hAlign="Left" vAlign="Middle" >
                         <Text text="{i18n>loteQty}" />
                     </Column>
-                    <Column width="60%" hAlign="Left" vAlign="Middle">
+                    <Column width="15%" hAlign="Left" vAlign="Middle" >
+                        <Text text="{i18n>secuenciaCode}" />
+                    </Column>
+                    <Column width="60%" hAlign="Left" vAlign="Middle" visible="false">
                         <Text text="{i18n>Value}" visible="false" />
                     </Column>
                     <Column width="10%" hAlign="Center" vAlign="Middle">
-                        <Text text="{i18n>ActionModify}" visible="false"/>
+                        <Text text="{i18n>modificarcantidad}" />
+                    </Column>
+                    <Column width="8%" hAlign="Center" vAlign="Middle">
+                        <Text text="" />
                     </Column>
                     <Column width="10%" hAlign="Center" vAlign="Middle">
                         <Text text="{i18n>ActionDelete}" visible="false" />
@@ -105,14 +132,16 @@ controllerName="serviacero.custom.plugins.zpluginPutBatchWCHBTS.zpluginPutBatchW
                             <Text text="{attribute}" />
                             <Input value="{path: 'value', formatter: '.formatter.getMaterial'}" enabled="false" />
                             <Input value="{path: 'value', formatter: '.formatter.getLote'}" enabled="false" />
+                            <ObjectAttribute text="{loteQty} {loteUom}" />
                             <Input value="{path: 'value', formatter: '.formatter.getSecuencia'}" enabled="false" />
-                            <Input value="{loteQty}" enabled="false" />
                             <Input value="{value}" enabled="false" visible="false"/>
-                            <ndc:BarcodeScannerButton  
+                            <Input value="{cantidadAsignada}" enabled="true" type="Number" width="100px"/>
+                            <Button icon="sap-icon://add" press=".onAddQty" tooltip="{i18n>modificarcantidad}"/>
+                            <!-- <ndc:BarcodeScannerButton  
                                 scanSuccess=".onScanSlotSuccess"
                                 scanFail=".onScanError"
                                 dialogTitle="{i18n>BarcodeScanner}"
-                            />
+                            /> -->
                             <Button icon="sap-icon://delete" press=".onDeleteSlot" type="Reject"/>
                         </cells>
                     </ColumnListItem>
