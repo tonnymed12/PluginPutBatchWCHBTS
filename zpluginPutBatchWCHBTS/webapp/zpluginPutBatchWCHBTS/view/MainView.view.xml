@@ -101,10 +101,10 @@ controllerName="serviacero.custom.plugins.zpluginPutBatchWCHBTS.zpluginPutBatchW
                     <Column width="30%" hAlign="Left" vAlign="Middle" visible="false">
                         <Text text="{i18n>Slot}" visible="false" />
                     </Column>
-                    <Column width="30%" hAlign="Left" vAlign="Middle" >
+                    <Column width="25%" hAlign="Left" vAlign="Middle" >
                         <Text text="{i18n>materialCode}" />
                     </Column>
-                    <Column width="30%" hAlign="Left" vAlign="Middle" >
+                    <Column width="20%" hAlign="Left" vAlign="Middle" >
                         <Text text="{i18n>loteCode}"  />
                     </Column>
                     <Column width="15%" hAlign="Left" vAlign="Middle" >
