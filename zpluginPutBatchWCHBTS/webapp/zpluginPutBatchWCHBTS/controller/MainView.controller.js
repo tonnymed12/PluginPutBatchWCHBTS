@@ -1286,6 +1286,34 @@ sap.ui.define([
                     }.bind(this));
 
                     Promise.all(aDescPromises).then(function () {
+                        return this.getGoodsIssueSummary({
+                            plant: oPODParams.PLANT_ID,
+                            order: oPODParams.ORDER_ID,
+                            sfc: oPODParams.SFC,
+                            operationActivity: oPODParams.OPERATION_ACTIVITY,
+                            stepId: oPODParams.STEP_ID
+                        }, oSapApi);
+                    }.bind(this)).then(function (oGoodsData) {
+                        // Mapear cantidadConsumida por material desde lineItems
+                        var aLineItems = (oGoodsData && Array.isArray(oGoodsData.lineItems)) ? oGoodsData.lineItems : [];
+                        var oConsumoMap = {};
+                        aLineItems.forEach(function (oItem) {
+                            var sMat = (oItem.materialId && oItem.materialId.material) || "";
+                            var nConsumo = (oItem.consumedQuantity && oItem.consumedQuantity.value) || 0;
+                            if (sMat) {
+                                oConsumoMap[sMat.toUpperCase()] = nConsumo;
+                            }
+                        });
+
+                        var aSummary = oOrderSummaryModel.getProperty("/ITEMS") || [];
+                        aSummary.forEach(function (oRow) {
+                            oRow.cantidadConsumida = oConsumoMap[(oRow.material || "").toUpperCase()] || 0;
+                        });
+                        oOrderSummaryModel.setProperty("/ITEMS", aSummary);
+                        oOrderSummaryModel.refresh(true);
+                        this._updateOrderSummaryScannedQty();
+                    }.bind(this)).catch(function () {
+                        // Si falla la consulta de consumos, igual mostrar el resumen sin esa columna
                         oOrderSummaryModel.refresh(true);
                         this._updateOrderSummaryScannedQty();
                     }.bind(this));
@@ -1329,6 +1357,16 @@ sap.ui.define([
 
             oOrderSummaryModel.setProperty("/ITEMS", aSummaryItems);
             oOrderSummaryModel.refresh(true);
+        },
+        getGoodsIssueSummary: function (sParams, oSapApi) {
+            return new Promise((resolve, reject) => {
+                this.ajaxGetRequest(oSapApi + this.ApiPaths.GOODSISSUES_SUMMARY, sParams, function (oRes) {
+                    resolve(oRes);
+                }.bind(this),
+                    function (oRes) {
+                        reject(oRes);
+                    }.bind(this));
+            });
         },
         getHeaderMaterial: function (sParams, oSapApi) {
             return new Promise((resolve, reject) => {

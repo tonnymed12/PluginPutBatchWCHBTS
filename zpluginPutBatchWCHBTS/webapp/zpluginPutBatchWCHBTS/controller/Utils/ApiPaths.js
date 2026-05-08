@@ -27,6 +27,8 @@ sap.ui.define([],
 
         //  Searches for work centers by plant and work center values
         WORKCENTERS : "workcenter/v2/workcenters",
+        // Get Goods Issue summary results for an order, sfc, operationActivity, stepId and plant.
+        GOODSISSUES_SUMMARY: "processorder/v2/goodsIssue/summary",
 
 
 
@@ -64,12 +66,12 @@ sap.ui.define([],
         
         /** PRODUCTION PROCESS API CONSUMPTION TYPE : POST  */
         SET_LOTE :"/pe/api/v1/process/processDefinitions/start?key=REG_8e9c20ce-5668-487d-bbc7-f1b4e642b21c",
-
+        /** PRODUCTION PROCESS API CONSUMPTION TYPE : POST  putBatchSlotWorkCenter*/
         putBatchSlotWorkCenter: "/pe/api/v1/process/processDefinitions/start?key=REG_4ee9064a-eaa4-4080-aafc-a606c7fa4900",
 
          /** PRODUCTION PROCESS API CONSUMPTION TYPE : POST  getReservas*/
         getReservas: "/pe/api/v1/process/processDefinitions/start?key=REG_2d4c6e10-7d49-4052-9b61-fa9050a41ffa&async=false",
-
+        /** PRODUCTION PROCESS API CONSUMPTION TYPE : POST  VALIDACION_MATERIAL*/
         validateMaterialEnOrden: "/pe/api/v1/process/processDefinitions/start?key=REG_2f5eafc1-59aa-478b-b9d7-a8bcf1941ee8&async=false"
 
     }
